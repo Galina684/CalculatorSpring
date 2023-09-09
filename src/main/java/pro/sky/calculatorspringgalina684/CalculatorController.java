@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/calculator")
 public class CalculatorController {
     private final CalculatorService calculatorServiceImpl;
 
@@ -13,29 +14,40 @@ public class CalculatorController {
         this.calculatorServiceImpl = calculatorServiceImpl;
     }
 
-    @RequestMapping(value = {"/", "/calculator"})
+    private String showCalculator(int num1, int num2, char action, int result) {
+        return String.format("%d %c %d = %d", num1, action, num2, result);
+    }
+
+    @GetMapping
     public String Welcome() {
         return calculatorServiceImpl.Welcome();
     }
 
-    @GetMapping(path = "/calculator/plus")
-    public int calculatePlus(@RequestParam("num1") int numOne, @RequestParam("num2") int numTwo) {
-        return calculatorServiceImpl.calculatePlus(numOne, numTwo);
+    @GetMapping(path = "/plus")
+    public String calculatePlus(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
+        int result = calculatorServiceImpl.calculatePlus(num1, num2);
+        return showCalculator(num1, num2, '+', result);
     }
 
-    @GetMapping(path = "/calculator/minus")
-    public int calculateMinus(@RequestParam("num1") int numOne, @RequestParam("num2") int numTwo) {
-        return calculatorServiceImpl.calculateMinus(numOne, numTwo);
+    @GetMapping(path = "/minus")
+    public String calculateMinus(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
+        int result = calculatorServiceImpl.calculateMinus(num1, num2);
+        return showCalculator(num1, num2, '-', result);
     }
 
-    @GetMapping(path = "/calculator/multiply")
-    public int calculateMultiply(@RequestParam("num1") int numOne, @RequestParam("num2") int numTwo) {
-        return calculatorServiceImpl.calculateMultiply(numOne, numTwo);
+    @GetMapping(path = "/multiply")
+    public String calculateMultiply(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
+        int result = calculatorServiceImpl.calculateMultiply(num1, num2);
+        return showCalculator(num1, num2, '*', result);
     }
 
 
-    @GetMapping(path = "/calculator/divide")
-    public int calculateDivide(@RequestParam("num1") int numOne, @RequestParam("num2") int numTwo) {
-        return calculatorServiceImpl.calculateDivide(numOne, numTwo);
+    @GetMapping(path = "/divide")
+    public String calculateDivide(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
+        if (num2 == 0) {
+            return "На ноль делить нельзя";
+        }
+        int result = calculatorServiceImpl.calculateDivide(num1, num2);
+        return showCalculator(num1, num2, '/', result);
     }
 }
