@@ -2,8 +2,11 @@ package pro.sky.calculatorspringgalina684;
 
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class CalculatorServiceImpl implements CalculatorService {
+
+
     @Override
     public String Welcome() {
         return "Добро пожаловать в калькулятор!";
