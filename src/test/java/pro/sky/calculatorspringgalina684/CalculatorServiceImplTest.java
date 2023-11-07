@@ -1,38 +1,49 @@
 package pro.sky.calculatorspringgalina684;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import pro.sky.calculatorspringgalina684.exception.DivideByZeroException;
+import pro.sky.calculatorspringgalina684.service.CalculatorServiceImpl;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CalculatorServiceImplTest {
 
     CalculatorServiceImpl calculatorTest = new CalculatorServiceImpl();
-
-    @Test
-    public void WelcomeTest() {
-
-        assertEquals(calculatorTest.Welcome(), "Добро пожаловать в калькулятор!");
+    private static final int POZITVE_VALUE = 10;
+    private static final int NEGATIVE_VALUY = -5;
+    private static final int ZERO = 0;
+    public static Stream<Arguments> minusCases(){
+        return Stream.of(
+                Arguments.of(POZITVE_VALUE, POZITVE_VALUE, POZITVE_VALUE-POZITVE_VALUE),
+                Arguments.of(ZERO, POZITVE_VALUE,ZERO-POZITVE_VALUE),
+                Arguments.of(NEGATIVE_VALUY,POZITVE_VALUE,NEGATIVE_VALUY-POZITVE_VALUE)
+        );
     }
 
     @Test
-    public void calculatePlusTest() {
-        assertEquals(calculatorTest.calculatePlus(10, 20), 30);
+    void calculatePlus() {
+        int result = calculatorTest.calculatePlus(POZITVE_VALUE, POZITVE_VALUE);
+        assertEquals(POZITVE_VALUE + POZITVE_VALUE, result);
     }
+
+
+
+    @ParameterizedTest
+    @MethodSource("minusCases")
+    void calculateMinus(int num1, int num2, int expected ) {
+        int result = calculatorTest.calculateMinus(num1,num2);
+        assertEquals(expected, result);
+    }
+
 
     @Test
-    public void calculateMinusTest() {
-        assertEquals(calculatorTest.calculateMinus(50, 40), 10);
+    void divideZero(){
+        assertThrows(DivideByZeroException.class, () -> calculatorTest.calculateDivide(POZITVE_VALUE, ZERO));
     }
-
-    @Test
-    public void calculateMultiplyTest() {
-        assertEquals(calculatorTest.calculateMultiply(5, 8), 40);
-    }
-
-    @Test
-    public void calculateDivideTest() {
-        assertEquals(calculatorTest.calculateDivide(30, 3), 10);
-    }
-
 }

@@ -1,6 +1,8 @@
-package pro.sky.calculatorspringgalina684;
+package pro.sky.calculatorspringgalina684.service;
 
 import org.springframework.stereotype.Service;
+import pro.sky.calculatorspringgalina684.exception.DivideByZeroException;
+import pro.sky.calculatorspringgalina684.service.CalculatorService;
 
 
 @Service
@@ -32,7 +34,7 @@ public class CalculatorServiceImpl implements CalculatorService {
     @Override
     public int calculateDivide(int num1, int num2) {
         if (num2 == 0) {
-            throw new IllegalArgumentException("На ноль делить нельзя");
+            throw new DivideByZeroException ("На ноль делить нельзя");
         } else {
             return num1 / num2;
         }

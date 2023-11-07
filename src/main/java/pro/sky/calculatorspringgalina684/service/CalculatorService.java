@@ -1,4 +1,4 @@
-package pro.sky.calculatorspringgalina684;
+package pro.sky.calculatorspringgalina684.service;
 
 public interface CalculatorService {
     String Welcome();
